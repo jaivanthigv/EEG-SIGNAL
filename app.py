@@ -473,6 +473,20 @@ def probability_rows(labels, probs):
     return "".join(dedent(row).strip() for row in rows)
 
 
+def render_probability_rows(labels, probs):
+    for label, prob in zip(labels, probs):
+        label_col, bar_col, value_col = st.columns([0.85, 2.1, 0.65])
+        with label_col:
+            st.caption(str(label).lower())
+        with bar_col:
+            st.progress(float(prob))
+        with value_col:
+            st.markdown(
+                f"<div style='text-align:right; font-weight:700;'>{prob:.2f}</div>",
+                unsafe_allow_html=True,
+            )
+
+
 def section_heading(title):
     st.markdown(f'<div class="panel-title" style="margin-bottom:10px;">{title}</div>', unsafe_allow_html=True)
 
@@ -696,11 +710,7 @@ def main():
 
     with right_col:
         section_heading("Prediction Probability")
-        probability_html = probability_rows(model.classes_, st.session_state.probabilities)
-        st.markdown(
-            f"<div>{probability_html}</div>",
-            unsafe_allow_html=True,
-        )
+        render_probability_rows(model.classes_, st.session_state.probabilities)
 
         top_classes = np.argsort(st.session_state.probabilities)[::-1][:3]
         section_heading("Top Predictions")
