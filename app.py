@@ -550,13 +550,13 @@ def main():
                     <div>
                         <div class="eyebrow">EEG Signal Quality</div>
                         <div class="quality-text">Good (92%)</div>
-                        {progress_bar_html(92)}
                     </div>
                 </div>
             </div>
             """,
             unsafe_allow_html=True,
         )
+        st.progress(92)
 
     left_col, main_col, right_col = st.columns([1.15, 2.35, 1.05])
 
